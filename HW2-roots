@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 25 09:14:17 2018
+
+@author: matthewreardon
+"""
+
+# machine precision per pg 48 text
+
+N=100
+eps=1.0
+
+for i in range(N):
+    eps=eps/2
+    one_Plus_eps=1.0+eps
+    #print('i=', i,' eps= ' ,eps,', 1+eps=', one_Plus_eps)
+    if one_Plus_eps==1.0: break
+n_precision=i
+print('machine precision = 1/2^n where n=', n_precision)
+
+
+#pg 56 prob1
+import numpy as np
+from math import *
+
+#roots_array = np.zeros(6)
+
+def  quadroots1(a,b,c):
+      #roots_array = np.zeros(4)
+      term1=sqrt(b**2-4*a*c)
+      if term1 < 1/2**(n_precision): print('root11 term line 32 term is < machine precision')
+      print('term1=',term1)
+      term2=2*a
+      term3=2*c
+      if -b+term1 < 1/2**(n_precision): print('root11 term line36 term is < machine precision')
+      root11= (-b+term1)/term2
+      print(root11)
+      if -b-term1 < 1/2**(n_precision): print('root12 term line  39 term is < machine precision')
+      root12= (-b-term1)/term2
+      print(root11)
+      print(root12)
+      if b+term1 < 1/2**(n_precision): print('root21 term line 43 term is < machine precision')
+      root21= -term3/(b+term1)
+      print(root11)
+      print(root21)
+      if b-term1 < 1/2**(n_precision): print('root22 term line 47 term is < machine precision')
+      root22= -term3/(b-term1)
+      print(root22)
+      return [root11, root12, root21, root22]      
+a=1
+b=1
+cvals=[]
+N=20  # <---- enter num iterations
+i=0
+data=[]
+runnum=[]
+root11=[]
+root12=[]
+root21=[]
+root22=[]
+for n in range(1,N):
+  c=10**(-n)
+  print(quadroots1(a,b,c))
+  data=quadroots1(a,b,c)
+  runnum.append(n)
+  cvals.append(c)
+  root11.append(data[0])
+  root12.append(data[1])
+  root21.append(data[2])
+  root22.append(data[3])
+  i+=i
+
+import matplotlib.pyplot as plt1
+plt.semilogx(cvals,root11,cvals,root21)
+plt.title='Std vs Modified form: pos roots'
+plt.grid(True)
+plt.show()
+
+plt.semilogx(cvals,root12,cvals,root22)
+plt.title='Std vs Modified form: neg roots'
+plt.grid(True)
+plt.show()
+
