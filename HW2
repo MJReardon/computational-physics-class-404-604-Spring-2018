@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Jan 24 11:49:01 2018
+
+@author: mreardon
+"""
+import time
+
+file1="fibiter.txt"
+file2="fibtab.txt"
+file3="fibmatrix.txt"
+df1=open(file1,'w+')
+df2=open(file2,'w+')
+df3=open(file3,'w+')
+
+runiterativemethod=1
+
+num1=[]
+fib1=[]
+t1=[]
+
+for n in range(0,10):  # <---- enter/change num iterations
+   #if runiterativemethod=1:
+       # Recursion or ITERATIVE method 
+        def fib2(n):      # extremely simple, but exponentially running time, very slow for large n, n cannot too large (stack limit)
+            if n == 0: return 0
+            elif n == 1: return 1
+            else: return fib2(n-1)+fib2(n-2)
+    
+        start_time = time.time()
+        fib1.append(fib2(n))
+        t=time.time() - start_time
+        t1.append(t)
+        num1.append(n)
+        print(t)
+        print("--- %s seconds ---" % t)
+        df1.write('%d %12.8f'% (n, t))
+        #if t_iter[ii]>30: runiterativemethod=0
+         
+num2=[]
+fib2=[] 
+t2=[]       
+for n in range(0,10):  # <---- enter/change num iterations
+   #TABULATION  method 
+    def fib4(n):      # fast, no stack limit
+        table=[0]*(n+1)
+        table[1] = 1
+        if n>=2:
+            for i in range(2,n+1): table[i]=table[i-1]+table[i-2]
+        return table[n]
+    
+    start_time = time.time()
+    fib2.append(fib4(n))
+    t=time.time() - start_time
+    t2.append(t)
+    num2.append(n)
+    print(t)
+    print("--- %s seconds ---" % t)
+
+num3=[]
+fib3=[] 
+t3=[]
+for n in range(0,10):   # <---- enter/change num iterations
+    #MATRIX method 
+    def arrpow(arr, n): # calculate 2x2 array to the nth power.
+        yarr=arr
+        if n<1:
+            print('n needs to be larger than 1')
+            if n==1:  return arr
+   
+        yarr = arrpow(arr, n//2)
+        yarr = [[yarr[0][0]*yarr[0][0]+yarr[0][1]*yarr[1][0],yarr[0][0]*yarr[0][1]+yarr[0][1]*yarr[1][1]],[yarr[1][0]*yarr[0][0]+yarr[1][1]*yarr[1][0],yarr[1][0]*yarr[0][1]+yarr[1][1]*yarr[1][1]]]
+        if n%2:   # if n is an odd number, multiple another arr
+            yarr=[[yarr[0][0]*arr[0][0]+yarr[0][1]*arr[1][0],yarr[0][0]*arr[0][1]+yarr[0][1]*arr[1][1]],[yarr[1][0]*arr[0][0]+yarr[1][1]*arr[1][0],yarr[1][0]*arr[0][1]+yarr[1][1]*arr[1][1]]]
+        return yarr
+
+    def fib5(n):   # the fastest method
+        arr= [[1,1],[1,0]]
+        f=arrpow(arr,n-1)[0][0]  #0 0 component is Fn#
+        return f
+
+    start_time = time.time()
+    fib3.append(fib4(n))
+    t=time.time() - start_time
+    t3.append(t)
+    num3.append(n)
+    print(t)
+    print("--- %s seconds ---" % t)
+    
+    
+df1.close()
+df2.close()
+df3.close()
+    
+
